@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>마이페이지</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 헤더 -->
+    <header class="header">
+
+        <div class="header-content"
+             style="justify-content:center;">
+
+            <h1 class="title">
+                👤 마이페이지
+            </h1>
+
+        </div>
+
+    </header>
+
+    <div class="container">
+
+        <!-- 프로필 -->
+        <div class="mypage-card">
+
+            <h2 id="userName">
+                사용자님
+            </h2>
+
+            <p id="userEmail">
+                example@email.com
+            </p>
+
+        </div>
+
+        <!-- 포인트 -->
+        <div class="mypage-card">
+
+            <h3>
+                💰 내 포인트
+               
+            </h3>
+
+            <div class="point-number">
+                1,200P
+            </div>
+
+        </div>
+
+        <!-- 웨이팅 -->
+        <div class="mypage-card">
+
+            <h3>
+                🍽 현재 웨이팅
+            </h3>
+
+            <p>
+                맘스터치 한신대점
+            </p>
+
+            <strong>
+                현재 순번 7번
+            </strong>
+
+        </div>
+
+        <!-- 최근 리뷰 -->
+        <div class="mypage-card">
+
+            <h3>
+                ⭐ 최근 리뷰
+            </h3>
+
+            <p>
+                "대기시간이 정확했어요!"
+            </p>
+
+        </div>
+<!-- 교환권 -->
+<div class="mypage-card">
+
+    <h3>
+        🎁 포인트 교환소
+    </h3>
+
+    <p>
+        포인트를 상품권으로 교환해보세요
+    </p>
+
+    <div class="coupon-list">
+
+        <div class="coupon-item">
+
+            <h4>5,000원권</h4>
+
+            <p>5,000P 필요</p>
+
+            <button onclick="usePoint(5000)">
+                교환하기
+            </button>
+
+        </div>
+
+        <div class="coupon-item">
+
+            <h4>10,000원권</h4>
+
+            <p>10,000P 필요</p>
+
+            <button onclick="usePoint(10000)">
+                교환하기
+            </button>
+
+        </div>
+
+        <div class="coupon-item">
+
+            <h4>20,000원권</h4>
+
+            <p>20,000P 필요</p>
+
+            <button onclick="usePoint(20000)">
+                교환하기
+            </button>
+
+        </div>
+
+        <div class="coupon-item">
+
+            <h4>30,000원권</h4>
+
+            <p>30,000P 필요</p>
+
+            <button onclick="usePoint(30000)">
+                교환하기
+            </button>
+
+        </div>
+
+        <div class="coupon-item">
+
+            <h4>50,000원권</h4>
+
+            <p>50,000P 필요</p>
+
+            <button onclick="usePoint(50000)">
+                교환하기
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+        <!-- 로그아웃 -->
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            로그아웃
+        </button>
+
+    </div>
+
+    <script src="mypage.js"></script>
+
+</body>
+</html>
+

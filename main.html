@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimePick - 한신대 스마트 관광 플랫폼</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content" style="justify-content:space-between; position:relative;">
+            <!-- 날씨 위젯 (왼쪽) -->
+            <div id="weather-widget" style="font-size:13px;"></div>
+            <!-- 로고 (가운데) -->
+            <h1 class="title" style="position:absolute; left:50%; transform:translateX(-50%);">⏱ TimePick</h1>
+            <!-- 마이페이지 버튼 (오른쪽) -->
+            <button onclick="location.href='mypage.html'" style="
+                background:rgba(255,255,255,0.2); border:none; color:white;
+                width:34px; height:34px; border-radius:50%; font-size:16px;
+                cursor:pointer; display:flex; align-items:center; justify-content:center;
+                margin-left:auto;
+            ">👤</button>
+        </div>
+    </header>
+
+    <!-- 메인 -->
+    <div class="container">
+
+        <!-- 검색 박스 -->
+        <div class="search-box">
+            <p class="search-title">📍 현재 설정 지역</p>
+            <div class="location-search">
+                <input type="text" id="locationInput" placeholder="지역명을 검색하세요">
+                <button onclick="searchLocation()">검색</button>
+            </div>
+            <button class="gps-btn" onclick="getCurrentLocation()">📍 현재 위치로 이동</button>
+            <div class="category-row">
+                <select id="category">
+                    <option value="all">전체 카테고리</option>
+                    <option value="korean">한식</option>
+                    <option value="cafe">카페</option>
+                    <option value="fastfood">패스트푸드</option>
+                </select>
+                <button onclick="sortByWait()">정렬</button>
+            </div>
+        </div>
+
+        <!-- 지도 -->
+        <div id="map"></div>
+
+        <!-- 날씨 배너 -->
+        <div id="weather-wait-banner" style="
+            margin:12px 0; padding:14px 18px;
+            background:linear-gradient(135deg,#eef2ff,#e0e7ff);
+            border-radius:14px; border-left:4px solid #4A90E2;
+            font-size:13px; color:#3730a3;
+            display:flex; align-items:center; gap:10px;
+        ">
+            <span style="font-size:20px">🌤️</span>
+            <span id="weather-banner-text">날씨 정보를 불러오는 중...</span>
+        </div>
+
+        <!-- 선택 식당 카드 -->
+        <div id="selectedStore" class="selected-store">
+            <img id="storeImg" src="">
+            <div class="store-info">
+                <h3 id="storeName">맘스터치</h3>
+                <p id="storeWait">현재 대기 15분</p>
+                <p id="storeWaitAdjusted" style="font-size:12px; color:#4A90E2; margin:2px 0 8px;"></p>
+                <button onclick="goWaiting()">🍽 웨이팅 등록하기</button>
+            </div>
+        </div>
+
+        <!-- 인기 맛집 -->
+        <div class="popular-box">
+            <h3>🔥 주변의 인기 맛집 TOP3</h3>
+            <div class="popular-item">🥇 맘스터치 한신대점</div>
+            <div class="popular-item">🥈 이삭토스트</div>
+            <div class="popular-item">🥉 우리반점</div>
+        </div>
+
+        <!-- AI 추천 -->
+        <div class="ai-banner">
+            🤖 AI 추천: 현재 혼잡도가 낮은 "이삭토스트"를 추천합니다!
+        </div>
+
+        <!-- 추천 제목 -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:15px; padding:0 5px;">
+            <h3 style="margin:0; color:#2D4B9B; font-size:18px;">🎯 실시간 한신대 추천</h3>
+            <span onclick="openShop()" style="font-size:12px; color:#4A90E2; font-weight:bold; cursor:pointer; background:#eff6ff; padding:6px 12px; border-radius:20px;">
+                💰 내 포인트: <span id="pointDisplay">1,200</span>P
+            </span>
+        </div>
+
+        <!-- 리스트 -->
+        <div id="list"></div>
+
+        <!-- 사장님 전용 버튼 (로그인 시 role=owner면 표시) -->
+        <button id="ownerBtn" onclick="location.href='owner.html'" style="
+            display:none; width:100%; margin-top:15px;
+            background:#FF5A00; color:white; border:none;
+            padding:14px; border-radius:12px; font-size:15px;
+            font-weight:700; cursor:pointer;
+        ">
+            🏪 우리 가게 점검하기
+        </button>
+
+        <!-- 포인트 적립 -->
+        <div style="margin-top:15px; padding:20px; background:#f1f5f9; border-radius:15px; text-align:center;">
+            <p style="font-size:14px; color:#475569; margin-bottom:10px;">방금 식당에서 나오셨나요?</p>
+            <button onclick="openInput()" style="background:#2D4B9B; width:100%; margin:0;">
+                포인트 적립하러 가기
+            </button>
+        </div>
+
+    </div>
+
+    <!-- 리워드 샵 모달 -->
+    <div id="shopModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:25px; border-radius:20px; width:85%; max-width:350px; text-align:center; position:relative;">
+            <span onclick="closeShop()" style="position:absolute; top:15px; right:20px; font-size:28px; cursor:pointer; color:#94a3b8; font-weight:bold;">×</span>
+            <h3 style="color:#2D4B9B; margin-top:0;">🎁 타임픽 리워드 샵</h3>
+            <p style="font-size:13px; color:#64748b; margin-bottom:20px;">보유 포인트: <strong style="color:#FF5A00;">1,200P</strong></p>
+            <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
+                <div style="border:1px solid #e2e8f0; padding:15px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>맘스터치</strong><br><span style="font-size:12px; color:#64748b;">싸이버거 세트 교환권</span></div>
+                    <button onclick="buyItem('맘스터치 싸이버거 세트', 600)" style="background:#FF5A00; color:white; border:none; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">600P</button>
+                </div>
+                <div style="border:1px solid #e2e8f0; padding:15px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>이삭토스트</strong><br><span style="font-size:12px; color:#64748b;">아메리카노 교환권</span></div>
+                    <button onclick="buyItem('이삭토스트 아메리카노', 300)" style="background:#FF5A00; color:white; border:none; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">300P</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 리뷰 모달 -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">✕</span>
+            <h2>📝 현장 정보 공유하기</h2>
+            <p class="reward-text">현장 상황을 알려주시면 300P를 드려요!</p>
+            <label>1. 방문 인원은 몇 명이신가요?</label>
+            <input type="number" placeholder="예: 2">
+            <label>2. 현재 상황이 어떠신가요?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="state"> 대기 중</label>
+                <label><input type="radio" name="state"> 식사 중</label>
+                <label><input type="radio" name="state"> 식사 완료</label>
+            </div>
+            <label>3. 매장 혼잡도는 어떤가요?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="crowd"> 여유</label>
+                <label><input type="radio" name="crowd"> 보통</label>
+                <label><input type="radio" name="crowd"> 혼잡</label>
+            </div>
+            <label>4. 체감 대기시간은 몇 분인가요?</label>
+            <input type="number" placeholder="예: 15">
+            <button class="submit-btn" onclick="submitReview()">300P 적립받기</button>
+        </div>
+    </div>
+
+    <script src="weather.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02e11ec3ab72981ecad234ecdeb83ed1&libraries=services"></script>
+    <script type="module" src="script.js"></script>
+
+    <script>
+        // 날씨 위젯
+        WeatherAPI.renderWeatherWidget("#weather-widget");
+        WeatherAPI.fetchWeather().then(w => {
+            const today = ["일","월","화","수","목","금","토"][new Date().getDay()];
+            const sign = w.waitMod >= 0 ? "+" : "";
+            document.getElementById("weather-banner-text").innerHTML =
+                `<strong>${w.icon} ${w.temp} ${w.label}</strong> &nbsp;|&nbsp; 오늘 ${today}요일 기준 대기시간 날씨 보정: <strong>${sign}${w.waitMod}%</strong>`;
+        });
+
+        window.updateStoreWait = async function(baseWait) {
+            const { finalWait, weatherInfo } = await WeatherAPI.predictWaitTime(baseWait);
+            document.getElementById("storeWait").textContent = `현재 대기 ${baseWait}분`;
+            document.getElementById("storeWaitAdjusted").textContent =
+                `${weatherInfo.icon} 날씨·요일 반영 예측: 약 ${finalWait}분`;
+        };
+
+        // 로그인 상태 확인 → 사장님이면 버튼 표시
+        const role = localStorage.getItem("role");
+        if (role === "owner") {
+            document.getElementById("ownerBtn").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

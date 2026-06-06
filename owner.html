@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimePick - 가게 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #f0f4ff;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            max-width: 430px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+            color: #1e293b;
+        }
+        header {
+            background: linear-gradient(135deg, #FF5A00, #ff8c42);
+            padding: 14px 16px;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-content {
+            display: flex; align-items: center;
+            justify-content: space-between;
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.2); border: none; color: white;
+            width: 34px; height: 34px; border-radius: 50%; font-size: 16px;
+            cursor: pointer;
+        }
+        header h1 { color: white; font-size: 16px; font-weight: 800; }
+        .logout-btn {
+            background: rgba(255,255,255,0.2); border: none; color: white;
+            padding: 6px 12px; border-radius: 20px; font-size: 12px;
+            font-weight: 600; cursor: pointer;
+        }
+
+        /* 가게 상태 카드 */
+        .store-status {
+            margin: 12px;
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 4px 20px rgba(255,90,0,0.1);
+        }
+        .store-name-row {
+            display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 12px;
+        }
+        .store-name-row h2 { font-size: 17px; font-weight: 800; color: #FF5A00; }
+        .status-badge {
+            background: #dcfce7; color: #16a34a;
+            font-size: 11px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .stat-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px; margin-bottom: 4px;
+        }
+        .stat-item {
+            background: #f8fafc; border-radius: 12px;
+            padding: 12px 8px; text-align: center;
+        }
+        .stat-item .val {
+            font-size: 22px; font-weight: 800;
+            color: #FF5A00; display: block;
+        }
+        .stat-item .lbl {
+            font-size: 11px; color: #64748b; margin-top: 2px;
+        }
+
+        /* 섹션 카드 */
+        .owner-card {
+            background: white;
+            margin: 0 12px 12px;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .owner-card h3 {
+            font-size: 15px; font-weight: 700;
+            color: #1e293b; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .owner-card input,
+        .owner-card select,
+        .owner-card textarea {
+            width: 100%; padding: 12px 14px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px;
+            font-size: 14px; margin-bottom: 10px;
+            outline: none; font-family: inherit;
+        }
+        .owner-card input:focus,
+        .owner-card select:focus,
+        .owner-card textarea:focus { border-color: #FF5A00; }
+        .owner-card textarea { height: 80px; resize: none; }
+        .save-btn {
+            width: 100%; padding: 13px;
+            background: #FF5A00; color: white;
+            border: none; border-radius: 12px;
+            font-size: 14px; font-weight: 700;
+            cursor: pointer;
+        }
+        .save-btn:active { transform: scale(0.98); }
+        .save-btn.secondary {
+            background: #2D4B9B;
+        }
+
+        /* 혼잡도 버튼 */
+        .crowd-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .crowd-btn {
+            flex: 1; padding: 10px; border: 2px solid #e2e8f0;
+            border-radius: 10px; background: white;
+            font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .crowd-btn.active-green { border-color: #10b981; background: #ecfdf5; color: #10b981; }
+        .crowd-btn.active-yellow { border-color: #f59e0b; background: #fffbeb; color: #f59e0b; }
+        .crowd-btn.active-red { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
+
+        /* 가게 등록 폼 */
+        .register-section { margin: 12px; }
+        .section-title {
+            font-size: 14px; font-weight: 700; color: #64748b;
+            margin-bottom: 10px; padding-left: 4px;
+        }
+        .register-form {
+            background: white; border-radius: 18px;
+            padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .form-label {
+            font-size: 12px; font-weight: 600; color: #64748b;
+            display: block; margin-bottom: 5px;
+        }
+        .form-input {
+            width: 100%; padding: 12px 14px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px;
+            font-size: 14px; margin-bottom: 12px; outline: none;
+        }
+        .form-input:focus { border-color: #FF5A00; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        /* 토스트 */
+        #toast {
+            display: none; position: fixed; bottom: 80px;
+            left: 50%; transform: translateX(-50%);
+            background: #1e293b; color: white;
+            padding: 12px 24px; border-radius: 30px;
+            font-size: 14px; font-weight: 700; z-index: 9999;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-content">
+            <button class="back-btn" onclick="location.href='index.html'">←</button>
+            <h1>🏪 우리 가게 점검하기</h1>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </header>
+
+    <!-- 가게 현황 -->
+    <div class="store-status">
+        <div class="store-name-row">
+            <h2 id="ownerStoreName">맘스터치 한신대점</h2>
+            <span class="status-badge">🟢 영업중</span>
+        </div>
+        <div class="stat-row">
+            <div class="stat-item">
+                <span class="val" id="statWait">15</span>
+                <span class="lbl">대기시간(분)</span>
+            </div>
+            <div class="stat-item">
+                <span class="val" id="statPeople">8</span>
+                <span class="lbl">현재 대기인원</span>
+            </div>
+            <div class="stat-item">
+                <span class="val" id="statReview">24</span>
+                <span class="lbl">오늘 리뷰</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 대기시간 수정 -->
+    <div class="owner-card">
+        <h3>⏳ 대기시간 관리</h3>
+        <input type="number" id="waitInput" placeholder="현재 대기시간 입력 (분)" min="0">
+        <button class="save-btn" onclick="updateWait()">대기시간 업데이트</button>
+    </div>
+
+    <!-- 혼잡도 -->
+    <div class="owner-card">
+        <h3>📊 혼잡도 설정</h3>
+        <div class="crowd-row">
+            <button class="crowd-btn" id="crowdYeo" onclick="setCrowd('여유')">🟢 여유</button>
+            <button class="crowd-btn" id="crowdBo" onclick="setCrowd('보통')">🟡 보통</button>
+            <button class="crowd-btn active-red" id="crowdHon" onclick="setCrowd('혼잡')">🔴 혼잡</button>
+        </div>
+        <button class="save-btn" onclick="updateCrowd()">혼잡도 저장</button>
+    </div>
+
+    <!-- 가게 등록/수정 -->
+    <div class="owner-card">
+        <h3>🏪 가게 정보 등록 / 수정</h3>
+
+        <label class="form-label">가게 이름</label>
+        <input class="form-input" type="text" id="regName" placeholder="예: 맘스터치 한신대점" value="맘스터치 한신대점">
+
+        <label class="form-label">카테고리</label>
+        <select class="form-input" id="regCategory">
+            <option value="패스트푸드">패스트푸드</option>
+            <option value="한식">한식</option>
+            <option value="중식">중식</option>
+            <option value="토스트">토스트</option>
+            <option value="카페">카페</option>
+            <option value="분식">분식</option>
+        </select>
+
+        <label class="form-label">주소</label>
+        <input class="form-input" type="text" id="regAddress" placeholder="예: 경기도 오산시 한신대길 137">
+
+        <div class="form-row">
+            <div>
+                <label class="form-label">영업 시작</label>
+                <input class="form-input" type="time" id="regOpen" value="09:00">
+            </div>
+            <div>
+                <label class="form-label">영업 종료</label>
+                <input class="form-input" type="time" id="regClose" value="21:00">
+            </div>
+        </div>
+
+        <label class="form-label">대표 메뉴 (쉼표로 구분)</label>
+        <input class="form-input" type="text" id="regMenu" placeholder="예: 싸이버거, 불고기버거, 치킨텐더">
+
+        <label class="form-label">가게 소개</label>
+        <textarea class="form-input" id="regDesc" placeholder="가게 소개를 입력해주세요" style="height:80px; resize:none;">한신대 학생들이 사랑하는 맛집!</textarea>
+
+        <button class="save-btn" onclick="saveStore()" style="margin-bottom:8px;">💾 가게 정보 저장</button>
+        <button class="save-btn secondary" onclick="registerNew()">➕ 새 가게 등록하기</button>
+    </div>
+
+    <!-- 광고 관리 -->
+    <div class="owner-card">
+        <h3>📢 광고 문구 관리</h3>
+        <textarea id="adText" placeholder="광고 문구를 입력하세요&#10;예: 오늘 싸이버거 세트 500원 할인!">오늘 싸이버거 세트 500원 할인! 🍔</textarea>
+        <button class="save-btn" onclick="saveAd()">광고 저장</button>
+    </div>
+
+    <!-- 쿠폰 발행 -->
+    <div class="owner-card">
+        <h3>🎁 쿠폰 발행</h3>
+        <label class="form-label">쿠폰 이름</label>
+        <input type="text" id="coupon" placeholder="예: 싸이버거 1+1 쿠폰">
+        <label class="form-label">필요 포인트</label>
+        <input type="number" id="couponPoint" placeholder="예: 500">
+        <button class="save-btn" onclick="createCoupon()">쿠폰 발행하기</button>
+    </div>
+
+    <!-- 메인으로 -->
+    <div style="margin: 0 12px;">
+        <button onclick="location.href='index.html'" style="
+            width:100%; background:#f1f5f9; color:#64748b;
+            border:none; padding:14px; border-radius:14px;
+            font-size:14px; font-weight:600; cursor:pointer;
+        ">← 메인으로 돌아가기</button>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // 사장님만 접근 가능
+        const role = localStorage.getItem("role");
+        if (role !== "owner") {
+            alert("사장님 전용 페이지입니다.");
+            location.href = "index.html";
+        }
+
+        let selectedCrowd = "혼잡";
+
+        function setCrowd(val) {
+            selectedCrowd = val;
+            document.getElementById("crowdYeo").className = "crowd-btn";
+            document.getElementById("crowdBo").className = "crowd-btn";
+            document.getElementById("crowdHon").className = "crowd-btn";
+            if (val === "여유") document.getElementById("crowdYeo").classList.add("active-green");
+            if (val === "보통") document.getElementById("crowdBo").classList.add("active-yellow");
+            if (val === "혼잡") document.getElementById("crowdHon").classList.add("active-red");
+        }
+
+        function updateWait() {
+            const val = document.getElementById("waitInput").value;
+            if (!val) { showToast("⚠️ 대기시간을 입력해주세요!"); return; }
+            document.getElementById("statWait").textContent = val;
+            showToast(`✅ 대기시간이 ${val}분으로 업데이트됐어요!`);
+        }
+
+        function updateCrowd() {
+            showToast(`✅ 혼잡도가 '${selectedCrowd}'으로 저장됐어요!`);
+        }
+
+        function saveStore() {
+            const name = document.getElementById("regName").value;
+            if (!name) { showToast("⚠️ 가게 이름을 입력해주세요!"); return; }
+            document.getElementById("ownerStoreName").textContent = name;
+            showToast(`✅ '${name}' 정보가 저장됐어요!`);
+        }
+
+        function registerNew() {
+            document.getElementById("regName").value = "";
+            document.getElementById("regAddress").value = "";
+            document.getElementById("regMenu").value = "";
+            document.getElementById("regDesc").value = "";
+            document.getElementById("regName").focus();
+            showToast("📝 새 가게 정보를 입력해주세요!");
+        }
+
+        function saveAd() {
+            const text = document.getElementById("adText").value;
+            if (!text) { showToast("⚠️ 광고 문구를 입력해주세요!"); return; }
+            showToast("✅ 광고가 저장됐어요!");
+        }
+
+        function createCoupon() {
+            const name = document.getElementById("coupon").value;
+            const point = document.getElementById("couponPoint").value;
+            if (!name || !point) { showToast("⚠️ 쿠폰 정보를 모두 입력해주세요!"); return; }
+            showToast(`🎁 '${name}' 쿠폰이 발행됐어요!`);
+            document.getElementById("coupon").value = "";
+            document.getElementById("couponPoint").value = "";
+        }
+
+        function logout() {
+            localStorage.removeItem("role");
+            localStorage.removeItem("loggedIn");
+            location.href = "login.html";
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.style.display = "block";
+            setTimeout(() => t.style.display = "none", 2500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>웨이팅</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 헤더 -->
+    <header class="header">
+
+        <div class="header-content"
+             style="justify-content:center;">
+
+            <h1 class="title">
+                🍽 웨이팅
+            </h1>
+
+        </div>
+
+    </header>
+
+    <div class="container">
+
+        <!-- 매장 정보 -->
+        <div class="store-box">
+
+            <h2>
+                맘스터치 한신대점
+            </h2>
+
+            <p>
+                ⭐ 4.8 · 도보 3분
+            </p>
+
+            <div class="waiting-status">
+
+                <div>
+
+                    <strong>5팀</strong>
+                    <span>현재 대기</span>
+
+                </div>
+
+                <div>
+
+                    <strong>15분</strong>
+                    <span>예상 시간</span>
+
+                </div>
+
+                <div>
+
+                    <strong>보통</strong>
+                    <span>혼잡도</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 웨이팅 등록 -->
+        <div class="waiting-register">
+
+            <h3>
+                웨이팅 등록
+            </h3>
+
+            <input
+                type="text"
+                placeholder="이름 입력"
+            >
+
+            <input
+                type="number"
+                placeholder="인원 수"
+            >
+
+            <button onclick="registerWaiting()">
+
+                🍽 웨이팅 등록하기
+
+            </button>
+
+        </div>
+
+        <!-- 내 웨이팅 -->
+        <div class="my-waiting">
+
+            <h3>
+                📍 내 웨이팅 현황
+            </h3>
+
+            <div class="waiting-number">
+
+                7번
+
+            </div>
+
+            <p>
+
+                현재 3팀 입장 완료
+
+            </p>
+
+            <div class="progress-bar">
+
+                <div class="progress-fill"></div>
+
+            </div>
+
+        </div>
+
+        <!-- 알림 -->
+        <div class="notify-box">
+
+            🔔 입장 5분 전에 알림을 보내드려요
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function registerWaiting() {
+
+            alert(
+                "🎉 웨이팅 등록 완료!\n\n현재 순번은 7번입니다."
+            );
+        }
+
+    </script>
+
+</body>
+</html>
+
