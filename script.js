@@ -1,20 +1,14 @@
-import { db } from './firebase.js';
-import {
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 // ====================================
 // 전역 데이터
 // ====================================
 let restaurants = [
   {
     name: "맘스터치 한신대점",
-    searchKeyword: "맘스터치 오산 한신대",   // 카카오맵 검색어
+    searchKeyword: "맘스터치 오산 한신대",
     category: "패스트푸드",
     rating: 4.8,
     wait: 15,
-    lat: 37.1924,   // 카카오맵 로드 전 임시 좌표 (한신대 중심)
+    lat: 37.1924,
     lng: 127.0251,
     img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd"
   },
@@ -46,16 +40,12 @@ let currentPoints = 1200;
 // ====================================
 // 시작
 // ====================================
-window.onload = async function () {
-  await loadRestaurants();
+window.onload = function () {
+  // Firebase 없이 바로 로컬 데이터로 시작
   showList();
-  // 카카오맵 SDK 로드 대기 후 지도 초기화
   waitForKakao(loadMainMap);
 
-  if (document.getElementById("name")) {
-    loadDetail();
-  }
-
+  // 사장님 버튼
   const role = localStorage.getItem("role");
   const ownerBtn = document.getElementById("ownerBtn");
   if (role === "owner" && ownerBtn) ownerBtn.style.display = "block";
@@ -71,24 +61,6 @@ function waitForKakao(callback) {
 }
 
 // ====================================
-// Firebase 데이터 가져오기
-// ====================================
-async function loadRestaurants() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "restaurants"));
-    const firebaseRestaurants = [];
-    querySnapshot.forEach((doc) => {
-      firebaseRestaurants.push({ id: doc.id, ...doc.data() });
-    });
-    if (firebaseRestaurants.length > 0) {
-      restaurants = firebaseRestaurants;
-    }
-  } catch (error) {
-    console.error("Firebase 오류:", error);
-  }
-}
-
-// ====================================
 // 메인 리스트 출력
 // ====================================
 function showList() {
@@ -98,9 +70,9 @@ function showList() {
   let html = "";
   restaurants.forEach((r, i) => {
     let crowdText = "", crowdColor = "";
-    if (r.wait <= 10)       { crowdText = "🟢 여유"; crowdColor = "#10b981"; }
-    else if (r.wait <= 25)  { crowdText = "🟡 보통"; crowdColor = "#f59e0b"; }
-    else                     { crowdText = "🔴 혼잡"; crowdColor = "#ef4444"; }
+    if (r.wait <= 10)      { crowdText = "🟢 여유"; crowdColor = "#10b981"; }
+    else if (r.wait <= 25) { crowdText = "🟡 보통"; crowdColor = "#f59e0b"; }
+    else                    { crowdText = "🔴 혼잡"; crowdColor = "#ef4444"; }
 
     html += `
     <div class="card" onclick="goDetail(${i})">
@@ -128,65 +100,35 @@ window.goDetail = function(index) {
 }
 
 // ====================================
-// 상세페이지 출력
-// ====================================
-function loadDetail() {
-  const index = localStorage.getItem("selected") || 0;
-  const r = restaurants[index];
-  if (!r) return;
-  document.getElementById("name").innerText = r.name;
-  document.getElementById("info").innerText = `${r.category} | ⭐ ${r.rating}`;
-  document.getElementById("wait").innerText = r.wait;
-  if (document.getElementById("detailImg")) document.getElementById("detailImg").src = r.img;
-}
-
-// ====================================
-// 메인 지도 - 카카오 키워드 검색으로 정확한 좌표 자동 설정
+// 메인 지도
 // ====================================
 function loadMainMap() {
   const mapContainer = document.getElementById('map');
   if (!mapContainer) return;
 
-  // 한신대 중심으로 지도 생성
   const center = new kakao.maps.LatLng(37.1924, 127.0251);
   map = new kakao.maps.Map(mapContainer, { center, level: 4 });
 
   const ps = new kakao.maps.services.Places();
 
-  // 식당마다 키워드 검색해서 실제 좌표로 마커 찍기
   restaurants.forEach((r, i) => {
     const keyword = r.searchKeyword || r.name + " 오산";
 
     ps.keywordSearch(keyword, function(data, status) {
       let pos;
-
       if (status === kakao.maps.services.Status.OK && data.length > 0) {
-        // 검색 성공 → 실제 좌표 사용
         pos = new kakao.maps.LatLng(data[0].y, data[0].x);
-        // 좌표를 restaurants 배열에도 업데이트
         restaurants[i].lat = parseFloat(data[0].y);
         restaurants[i].lng = parseFloat(data[0].x);
-        console.log(`✅ ${r.name} 좌표 찾음:`, data[0].y, data[0].x);
       } else {
-        // 검색 실패 → 기존 좌표 사용
         pos = new kakao.maps.LatLng(r.lat, r.lng);
-        console.warn(`⚠️ ${r.name} 좌표 검색 실패, 기본 좌표 사용`);
       }
 
-      // 마커 생성
       const marker = new kakao.maps.Marker({ map, position: pos, title: r.name });
 
-      // 말풍선 (항상 표시)
       const infowindow = new kakao.maps.InfoWindow({
         content: `
-          <div style="
-            padding:7px 11px;
-            font-size:12px;
-            font-weight:bold;
-            color:#1e293b;
-            white-space:nowrap;
-            line-height:1.5;
-          ">
+          <div style="padding:7px 11px; font-size:12px; font-weight:bold; color:#1e293b; white-space:nowrap; line-height:1.5;">
             🍽 ${r.name}<br>
             <span style="color:#FF5A00; font-size:11px; font-weight:normal;">⏳ ${r.wait}분 대기</span>
           </div>
@@ -195,14 +137,15 @@ function loadMainMap() {
       });
       infowindow.open(map, marker);
 
-      // ✅ 마커 클릭 → 하단 카드 표시 + detail.html 이동
+      // 마커 클릭 → 바로 detail.html 이동
       kakao.maps.event.addListener(marker, 'click', function() {
-        showStoreCard(r, i);
+        localStorage.setItem("selected", i);
+        localStorage.setItem("selectedStore", JSON.stringify(restaurants[i]));
+        location.href = "detail.html";
       });
     });
   });
 
-  // 지도 빈 곳 클릭 → 하단 카드 숨기기
   kakao.maps.event.addListener(map, 'click', function() {
     const card = document.getElementById("selectedStore");
     if (card) card.style.display = "none";
@@ -210,7 +153,7 @@ function loadMainMap() {
 }
 
 // ====================================
-// 하단 식당 카드 표시 (날씨 연동)
+// 하단 식당 카드 표시
 // ====================================
 function showStoreCard(r, i) {
   const card = document.getElementById("selectedStore");
@@ -221,7 +164,6 @@ function showStoreCard(r, i) {
   document.getElementById("storeName").innerText = r.name;
   document.getElementById("storeWait").innerText = `현재 대기 ${r.wait}분`;
 
-  // 날씨 보정 대기시간
   const adjustedEl = document.getElementById("storeWaitAdjusted");
   if (adjustedEl && window.WeatherAPI) {
     adjustedEl.innerText = "날씨 반영 예측 중...";
@@ -230,14 +172,12 @@ function showStoreCard(r, i) {
     });
   }
 
-  // 카드 클릭 → detail.html 이동
   card.onclick = function() {
     localStorage.setItem("selected", i);
     localStorage.setItem("selectedStore", JSON.stringify(r));
     location.href = "detail.html";
   };
 
-  // 웨이팅 버튼 클릭 (카드 이동과 분리)
   const waitBtn = card.querySelector("button");
   if (waitBtn) {
     waitBtn.onclick = function(e) {
@@ -273,11 +213,7 @@ function openWaitingModal(r) {
 
   const waitTime = r.wait || 15;
   modal.innerHTML = `
-    <div style="
-      background:white; width:100%; max-width:430px;
-      border-radius:24px 24px 0 0; padding:24px 20px;
-      animation:slideUp 0.3s ease;
-    ">
+    <div style="background:white; width:100%; max-width:430px; border-radius:24px 24px 0 0; padding:24px 20px; animation:slideUp 0.3s ease;">
       <div style="width:40px; height:4px; background:#e2e8f0; border-radius:2px; margin:0 auto 16px;"></div>
       <span onclick="closeWaitingModal()" style="float:right; font-size:24px; cursor:pointer; color:#94a3b8;">×</span>
       <div style="text-align:center; margin-bottom:16px;">
@@ -294,10 +230,7 @@ function openWaitingModal(r) {
         📋 순서가 되면 알림을 보내드려요<br>
         ✅ 웨이팅 완료 후 리뷰 작성 시 <strong style="color:#FF5A00;">300P</strong> 적립
       </div>
-      <button onclick="confirmWaiting('${r.name}')" style="
-        width:100%; background:#FF5A00; color:white; border:none;
-        border-radius:14px; padding:15px; font-size:16px; font-weight:800; cursor:pointer;
-      ">✅ 웨이팅 등록하기</button>
+      <button onclick="confirmWaiting('${r.name}')" style="width:100%; background:#FF5A00; color:white; border:none; border-radius:14px; padding:15px; font-size:16px; font-weight:800; cursor:pointer;">✅ 웨이팅 등록하기</button>
     </div>
   `;
 
