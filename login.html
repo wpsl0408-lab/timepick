@@ -16,143 +16,126 @@
             font-family: 'Pretendard', -apple-system, sans-serif;
             padding: 20px;
         }
-        .login-wrap {
-            width: 100%;
-            max-width: 360px;
-            text-align: center;
-        }
+        .login-wrap { width: 100%; max-width: 360px; text-align: center; }
         .login-logo {
-            font-size: 36px;
-            font-weight: 900;
-            color: white;
-            margin-bottom: 6px;
-            letter-spacing: -1px;
+            font-size: 42px; font-weight: 900; color: white;
+            margin-bottom: 8px; letter-spacing: -1px;
         }
         .login-subtitle {
-            font-size: 13px;
-            color: rgba(255,255,255,0.75);
-            margin-bottom: 32px;
+            font-size: 13px; color: rgba(255,255,255,0.75);
+            margin-bottom: 36px; line-height: 1.6;
         }
         .login-card {
-            background: white;
-            border-radius: 24px;
-            padding: 28px 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            background: white; border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
         }
         .login-card h2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 20px;
+            font-size: 20px; font-weight: 800;
+            color: #1e293b; margin-bottom: 20px;
         }
-        .login-card input,
-        .login-card select {
-            width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            color: #1e293b;
-            outline: none;
+        .input-group { margin-bottom: 14px; text-align: left; }
+        .input-label {
+            font-size: 12px; font-weight: 600;
+            color: #64748b; display: block; margin-bottom: 6px;
+        }
+        .input-field {
+            width: 100%; padding: 13px 16px;
+            border: 1.5px solid #e2e8f0; border-radius: 12px;
+            font-size: 14px; color: #1e293b; outline: none;
             transition: border-color 0.2s;
-        }
-        .login-card input:focus,
-        .login-card select:focus {
-            border-color: #4A90E2;
-        }
-        .role-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            text-align: left;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .role-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .role-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            /* autocomplete 방지 */
             background: white;
-            font-size: 13px;
-            font-weight: 600;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s;
+        }
+        .input-field:focus { border-color: #4A90E2; }
+
+        /* 비밀번호 토글 */
+        .pw-wrap { position: relative; }
+        .pw-toggle {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none;
+            font-size: 16px; cursor: pointer; color: #94a3b8;
+        }
+
+        .role-label {
+            font-size: 12px; font-weight: 600;
+            color: #64748b; display: block;
+            margin-bottom: 8px; text-align: left;
+        }
+        .role-row { display: flex; gap: 8px; margin-bottom: 20px; }
+        .role-btn {
+            flex: 1; padding: 10px; border: 2px solid #e2e8f0;
+            border-radius: 10px; background: white;
+            font-size: 13px; font-weight: 600;
+            color: #64748b; cursor: pointer; transition: all 0.2s;
         }
         .role-btn.active {
             border-color: #2D4B9B;
-            background: #eff6ff;
-            color: #2D4B9B;
+            background: #eff6ff; color: #2D4B9B;
         }
         .login-btn {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 15px;
             background: linear-gradient(135deg, #2D4B9B, #4A90E2);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-bottom: 12px;
+            color: white; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 800; cursor: pointer;
             box-shadow: 0 4px 16px rgba(45,75,155,0.3);
+            margin-bottom: 14px;
         }
         .login-btn:active { transform: scale(0.98); }
-        .signup-link {
-            font-size: 13px;
-            color: #64748b;
-        }
-        .signup-link a {
-            color: #4A90E2;
-            font-weight: 600;
-            text-decoration: none;
-        }
         .demo-hint {
-            margin-top: 16px;
-            padding: 12px;
-            background: #f8fafc;
-            border-radius: 10px;
-            font-size: 12px;
-            color: #64748b;
-            text-align: left;
-            line-height: 1.6;
+            background: #f8fafc; border-radius: 10px;
+            padding: 12px; font-size: 12px;
+            color: #64748b; text-align: left; line-height: 1.7;
         }
+        .demo-hint strong { color: #2D4B9B; }
     </style>
 </head>
 <body>
     <div class="login-wrap">
         <h1 class="login-logo">⏱ TimePick</h1>
-        <p class="login-subtitle">실시간 대기 기반 스마트 맛집 플랫폼</p>
+        <p class="login-subtitle">실시간 대기 기반<br>스마트 맛집 플랫폼</p>
 
         <div class="login-card">
             <h2>로그인</h2>
 
-            <input type="email" id="email" placeholder="이메일 입력">
-            <input type="password" id="password" placeholder="비밀번호 입력">
-
-            <span class="role-label">로그인 유형 선택</span>
-            <div class="role-row">
-                <button class="role-btn active" id="roleUser" onclick="selectRole('user')">
-                    👤 일반 사용자
-                </button>
-                <button class="role-btn" id="roleOwner" onclick="selectRole('owner')">
-                    🏪 사장님
-                </button>
+            <div class="input-group">
+                <label class="input-label">이메일</label>
+                <input
+                    class="input-field"
+                    type="text"
+                    id="email"
+                    placeholder="이메일 입력"
+                    autocomplete="off"
+                >
             </div>
-            <input type="hidden" id="roleSelect" value="user">
+
+            <div class="input-group">
+                <label class="input-label">비밀번호</label>
+                <div class="pw-wrap">
+                    <!-- type=text로 설정해 브라우저 비밀번호 저장 경고 방지 -->
+                    <!-- JS로 글자를 •로 보이게 처리 -->
+                    <input
+                        class="input-field"
+                        type="text"
+                        id="password"
+                        placeholder="비밀번호 입력"
+                        autocomplete="off"
+                        oninput="maskPassword(this)"
+                        style="letter-spacing: 3px;"
+                    >
+                    <button class="pw-toggle" onclick="togglePw()" type="button" id="pwToggle">👁</button>
+                </div>
+            </div>
+
+            <span class="role-label">로그인 유형</span>
+            <div class="role-row">
+                <button class="role-btn active" id="roleUser" onclick="selectRole('user')">👤 손님</button>
+                <button class="role-btn" id="roleOwner" onclick="selectRole('owner')">🏪 사장님</button>
+            </div>
 
             <button class="login-btn" onclick="login()">로그인하기</button>
 
-            <p class="signup-link">계정이 없으신가요? <a href="#">회원가입</a></p>
-
-            <!-- 발표용 힌트 -->
             <div class="demo-hint">
                 💡 <strong>데모 계정</strong><br>
                 손님: user@test.com / 1234<br>
@@ -162,31 +145,65 @@
     </div>
 
     <script>
+        let selectedRole = "user";
+        let pwVisible = false;
+        let realPassword = "";
+
+        // 비밀번호 마스킹 (type=text지만 •로 보이게)
+        function maskPassword(input) {
+            const cursorPos = input.selectionStart;
+            const newChar = input.value.slice(realPassword.length > input.value.length
+                ? input.value.length : realPassword.length);
+
+            if (input.value.length > realPassword.length) {
+                // 글자 추가
+                realPassword += input.value.slice(realPassword.length);
+            } else {
+                // 글자 삭제
+                realPassword = realPassword.slice(0, input.value.length);
+            }
+
+            if (!pwVisible) {
+                input.value = "•".repeat(realPassword.length);
+                // 커서 위치 유지
+                input.setSelectionRange(cursorPos, cursorPos);
+            }
+        }
+
+        // 비밀번호 보이기/숨기기
+        function togglePw() {
+            pwVisible = !pwVisible;
+            const input = document.getElementById("password");
+            const btn = document.getElementById("pwToggle");
+            if (pwVisible) {
+                input.value = realPassword;
+                btn.textContent = "🙈";
+            } else {
+                input.value = "•".repeat(realPassword.length);
+                btn.textContent = "👁";
+            }
+        }
+
         function selectRole(role) {
-            document.getElementById("roleSelect").value = role;
+            selectedRole = role;
             document.getElementById("roleUser").classList.toggle("active", role === "user");
             document.getElementById("roleOwner").classList.toggle("active", role === "owner");
         }
 
         function login() {
             const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const role = document.getElementById("roleSelect").value;
-
-            if (!email || !password) {
+            if (!email || !realPassword) {
                 alert("이메일과 비밀번호를 입력해주세요!");
                 return;
             }
-
-            // 발표용 데모 로그인
-            localStorage.setItem("role", role);
+            localStorage.setItem("role", selectedRole);
             localStorage.setItem("email", email);
             localStorage.setItem("loggedIn", "true");
 
-            if (role === "owner") {
+            if (selectedRole === "owner") {
                 location.href = "owner.html";
             } else {
-                location.href = "index.html";
+                location.href = "main.html";
             }
         }
     </script>
