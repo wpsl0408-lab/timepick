@@ -2,9 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TimePick - 상세 정보</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     :root {
       --primary: #2D4B9B;
@@ -14,203 +13,261 @@
       --text: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      font-family: 'Pretendard', -apple-system, sans-serif;
-      color: var(--text);
-      max-width: 430px;
-      margin: 0 auto;
-      padding-bottom: 40px;
+      --radius: 16px;
+      --mx: 14px;        /* 좌우 여백 통일 */
+      --gap: 12px;       /* 섹션 간격 통일 */
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg);
+      font-family: -apple-system, 'Malgun Gothic', sans-serif;
+      color: var(--text);
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 48px;
+    }
+
+    /* ── 헤더 ── */
     header {
       background: linear-gradient(135deg, #2D4B9B, #4A90E2);
-      padding: 14px 16px;
+      padding: 14px var(--mx);
       position: sticky; top: 0; z-index: 100;
+      width: 100%;
     }
     .header-content { display: flex; align-items: center; gap: 12px; }
     .back-btn {
       background: rgba(255,255,255,0.2); border: none; color: white;
-      width: 34px; height: 34px; border-radius: 50%; font-size: 16px;
-      cursor: pointer;
+      width: 36px; height: 36px; border-radius: 50%; font-size: 18px;
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
     }
     header h1 { color: white; font-size: 16px; font-weight: 700; }
 
-    .hero-card {
-      background: var(--card); margin: 12px; border-radius: 18px;
-      overflow: hidden; box-shadow: 0 4px 20px rgba(45,75,155,0.1);
+    /* ── 공통 섹션 카드 ── */
+    .card {
+      background: var(--card);
+      margin: 0 var(--mx) var(--gap);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      width: calc(100% - var(--mx) * 2);
     }
-    .hero-img { width: 100%; height: 180px; object-fit: cover; display: block; }
-    .hero-info { padding: 14px 16px; }
-    .hero-info h2 { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
-    .hero-meta { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .card-title {
+      font-size: 14px; font-weight: 700;
+      color: var(--primary); margin-bottom: 12px;
+    }
+
+    /* ── 히어로 카드 ── */
+    .hero-card {
+      background: var(--card);
+      margin: var(--gap) var(--mx) var(--gap);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(45,75,155,0.12);
+      width: calc(100% - var(--mx) * 2);
+    }
+    .hero-img {
+      width: 100%; height: 200px; object-fit: cover; display: block;
+    }
+    .hero-body { padding: 16px; }
+    .hero-name { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .hero-meta { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
     .wait-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: #fff7ed; border: 1px solid #fed7aa;
-      border-radius: 20px; padding: 8px 16px;
-      font-size: 16px; font-weight: 800; color: var(--orange);
+      background: #fff7ed; border: 1.5px solid #fed7aa;
+      border-radius: 24px; padding: 9px 18px;
+      font-size: 17px; font-weight: 800; color: var(--orange);
     }
-    .wait-adjusted { font-size: 12px; color: #4A90E2; margin-top: 8px; }
+    .wait-adjusted {
+      font-size: 12px; color: #4A90E2; margin-top: 10px;
+      display: flex; align-items: center; gap: 4px;
+    }
 
+    /* ── 웨이팅 버튼 ── */
     .waiting-btn {
-      display: block; width: calc(100% - 24px); margin: 0 12px 12px;
+      display: block;
+      width: calc(100% - var(--mx) * 2);
+      margin: 0 var(--mx) var(--gap);
       background: var(--orange); color: white; border: none;
-      border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 800;
-      cursor: pointer; box-shadow: 0 4px 16px rgba(255,90,0,0.35);
+      border-radius: var(--radius); padding: 17px;
+      font-size: 16px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 18px rgba(255,90,0,0.35);
+      letter-spacing: -0.3px;
     }
-    .waiting-btn:active { transform: scale(0.98); }
+    .waiting-btn:active { opacity: 0.9; transform: scale(0.99); }
 
-    .section {
-      background: var(--card); margin: 0 12px 12px; border-radius: 18px;
-      padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    }
-    .section-title {
-      font-size: 14px; font-weight: 700; color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    /* 지도 크게 */
+    /* ── 지도 ── */
     #map {
-      width: 100%; height: 280px;
-      border-radius: 12px; border: 1px solid var(--border);
+      width: 100%; height: 260px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: block;
     }
     .store-address {
-      font-size: 12px; color: #64748b;
+      font-size: 12px; color: var(--muted);
       margin-top: 8px; text-align: center;
     }
 
-    /* 그래프 */
+    /* ── 혼잡도 그래프 ── */
     .chart-wrap {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 6px; padding: 0 4px;
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 8px; padding: 0 2px;
     }
     .chart-col {
       flex: 1; display: flex; flex-direction: column;
-      align-items: center; gap: 4px; justify-content: flex-end;
+      align-items: center; gap: 5px; justify-content: flex-end;
     }
     .chart-bar-wrap {
       width: 100%; display: flex; flex-direction: column;
       align-items: center; justify-content: flex-end;
-      height: 90px; position: relative;
+      height: 100px; position: relative;
     }
     .chart-bar {
-      width: 72%; background: #93c5fd; border-radius: 6px 6px 0 0; min-height: 8px;
+      width: 68%; background: #93c5fd;
+      border-radius: 6px 6px 0 0; min-height: 10px;
     }
     .chart-bar.peak { background: var(--orange); }
     .peak-label {
-      position: absolute; top: -18px; font-size: 9px;
-      font-weight: 700; color: var(--orange);
+      position: absolute; top: -20px; font-size: 9px;
+      font-weight: 700; color: var(--orange); white-space: nowrap;
     }
     .chart-time { font-size: 10px; color: var(--muted); font-weight: 600; }
 
+    /* ── 최적 방문 ── */
     .recommend-box {
-      display: flex; align-items: flex-start; gap: 10px;
+      display: flex; align-items: flex-start; gap: 12px;
       background: #fff7ed; border: 1px solid #fed7aa;
-      border-radius: 12px; padding: 12px 14px; margin-top: 12px;
+      border-radius: 12px; padding: 14px; margin-top: 14px;
     }
-    .recommend-box strong { color: var(--orange); font-size: 14px; display: block; margin-bottom: 3px; }
-    .recommend-box p { font-size: 12px; color: var(--muted); }
+    .recommend-box .icon { font-size: 24px; flex-shrink: 0; }
+    .recommend-box strong { color: var(--orange); font-size: 14px; display: block; margin-bottom: 4px; }
+    .recommend-box p { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
+    /* ── 리뷰 ── */
     .review-item {
-      background: #f8fafc; border-radius: 12px; padding: 12px; margin-bottom: 8px;
+      background: #f8fafc; border-radius: 12px;
+      padding: 13px; margin-bottom: 8px;
     }
+    .review-item:last-child { margin-bottom: 0; }
     .review-header {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 6px; flex-wrap: wrap;
     }
-    .review-header .user { font-size: 13px; font-weight: 700; color: var(--primary); }
-    .review-header .stars { font-size: 12px; }
-    .review-header .wait-info {
+    .reviewer { font-size: 13px; font-weight: 700; color: var(--primary); }
+    .stars { font-size: 12px; }
+    .wait-chip {
       font-size: 11px; background: #dbeafe; color: var(--primary);
-      padding: 2px 8px; border-radius: 20px; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px; font-weight: 600;
     }
-    .review-item p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .review-item p { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
+    /* ── 포인트 배너 ── */
     .reward-banner {
       background: linear-gradient(135deg, #1e3a8a, #2D4B9B);
-      border-radius: 18px; padding: 16px; margin: 0 12px 12px;
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      border-radius: var(--radius); padding: 16px;
+      margin: 0 var(--mx) var(--gap);
+      width: calc(100% - var(--mx) * 2);
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 12px;
     }
     .reward-banner h4 { color: white; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
     .reward-banner p { color: #93c5fd; font-size: 12px; }
     .point-btn {
       background: var(--orange); color: white; border: none;
-      border-radius: 10px; padding: 10px 16px; font-size: 13px;
-      font-weight: 700; cursor: pointer; white-space: nowrap;
+      border-radius: 10px; padding: 11px 16px; font-size: 13px;
+      font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0;
     }
 
-    .ad-section {
-      background: var(--card); margin: 0 12px 12px; border-radius: 18px;
-      padding: 14px 16px; border: 1px dashed #cbd5e1;
+    /* ── 광고 ── */
+    .ad-card {
+      background: var(--card);
+      margin: 0 var(--mx) var(--gap);
+      border-radius: var(--radius); padding: 14px 16px;
+      border: 1.5px dashed #cbd5e1;
+      width: calc(100% - var(--mx) * 2);
     }
     .ad-label {
       display: inline-block; font-size: 10px; background: #e2e8f0;
       color: var(--muted); padding: 2px 7px; border-radius: 4px;
       margin-bottom: 8px; font-weight: 600;
     }
-    .ad-section h4 { font-size: 14px; margin-bottom: 4px; }
-    .ad-section p { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
-    .alt-card {
+    .ad-card h4 { font-size: 14px; margin-bottom: 4px; }
+    .ad-card p { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+    .alt-chip {
       background: linear-gradient(135deg, #ecfdf5, #d1fae5);
       border-radius: 10px; padding: 10px 14px;
       font-size: 13px; color: #065f46; font-weight: 600;
     }
 
+    /* ── 목록 버튼 ── */
     .home-btn {
-      display: block; width: calc(100% - 24px); margin: 0 12px;
+      display: block;
+      width: calc(100% - var(--mx) * 2);
+      margin: 0 var(--mx);
       background: #f1f5f9; color: var(--muted); border: none;
-      border-radius: 14px; padding: 14px; font-size: 14px;
+      border-radius: var(--radius); padding: 15px; font-size: 14px;
       font-weight: 600; cursor: pointer;
     }
 
-    /* 바텀시트 모달 */
+    /* ── 모달 (바텀시트) ── */
     .modal-overlay {
       display: none; position: fixed; top: 0; left: 0;
       width: 100%; height: 100%; background: rgba(0,0,0,0.6);
       z-index: 1000; justify-content: center; align-items: flex-end;
     }
     .modal-overlay.active { display: flex; }
-    .modal-content {
-      background: white; width: 100%; max-width: 430px;
+    .modal-sheet {
+      background: white; width: 100%; max-width: 480px;
       border-radius: 24px 24px 0 0; padding: 24px 20px;
-      max-height: 88vh; overflow-y: auto;
+      max-height: 90vh; overflow-y: auto;
       animation: slideUp 0.3s ease;
     }
-    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .modal-handle {
       width: 40px; height: 4px; background: #e2e8f0;
-      border-radius: 2px; margin: 0 auto 16px;
+      border-radius: 2px; margin: 0 auto 18px;
     }
-    .close-btn { float: right; font-size: 24px; cursor: pointer; color: var(--muted); }
-    .survey-group { margin-bottom: 16px; }
-    .survey-group > label {
-      font-size: 13px; font-weight: 700; display: block; margin-bottom: 8px;
+    .close-btn {
+      float: right; font-size: 26px; cursor: pointer;
+      color: var(--muted); line-height: 1; margin-top: -4px;
     }
-    .survey-group input[type="number"] {
-      width: 100%; padding: 12px; border: 1px solid var(--border);
-      border-radius: 10px; font-size: 14px;
-    }
-    .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
-    .radio-group label {
-      display: flex; align-items: center; gap: 5px; font-size: 13px;
-      background: #f8fafc; border: 1px solid var(--border);
-      padding: 8px 12px; border-radius: 20px; cursor: pointer;
-    }
-    .btn-submit {
-      width: 100%; background: var(--orange); color: white; border: none;
-      border-radius: 14px; padding: 15px; font-size: 16px;
-      font-weight: 800; cursor: pointer; margin-top: 8px;
+    .modal-title {
+      font-size: 17px; font-weight: 800; color: var(--primary); margin-bottom: 12px;
     }
     .weather-bar {
       background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px;
       padding: 10px 14px; font-size: 13px; color: #0369a1;
       font-weight: 600; text-align: center; margin-bottom: 14px;
     }
+    .survey-group { margin-bottom: 16px; }
+    .survey-group > label {
+      font-size: 13px; font-weight: 700; display: block; margin-bottom: 8px;
+    }
+    .survey-group input[type="number"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 14px; outline: none;
+    }
+    .survey-group input[type="number"]:focus { border-color: var(--primary); }
+    .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .radio-group label {
+      display: flex; align-items: center; gap: 6px; font-size: 13px;
+      background: #f8fafc; border: 1.5px solid var(--border);
+      padding: 8px 13px; border-radius: 20px; cursor: pointer;
+    }
+    .radio-group input[type="radio"] { accent-color: var(--orange); }
+    .submit-btn {
+      width: 100%; background: var(--orange); color: white; border: none;
+      border-radius: 14px; padding: 15px; font-size: 16px;
+      font-weight: 800; cursor: pointer; margin-top: 8px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- 헤더 -->
   <header>
     <div class="header-content">
       <button onclick="history.back()" class="back-btn">←</button>
@@ -222,11 +279,11 @@
   <div class="hero-card">
     <img id="detailImg" class="hero-img"
       src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd" alt="식당">
-    <div class="hero-info">
-      <h2 id="name">맘스터치 한신대점</h2>
+    <div class="hero-body">
+      <div class="hero-name" id="name">맘스터치 한신대점</div>
       <div class="hero-meta" id="info">패스트푸드 | ⭐ 4.8</div>
       <div class="wait-badge">⏳ 현재 대기 <span id="wait">15</span>분</div>
-      <p class="wait-adjusted" id="waitAdjusted"></p>
+      <div class="wait-adjusted" id="waitAdjusted"></div>
     </div>
   </div>
 
@@ -234,15 +291,15 @@
   <button class="waiting-btn" onclick="openWaitingModal()">🍽 웨이팅 등록하기</button>
 
   <!-- ③ 식당 위치 -->
-  <div class="section">
-    <div class="section-title">📍 식당 위치</div>
+  <div class="card">
+    <div class="card-title">📍 식당 위치</div>
     <div id="map"></div>
     <p class="store-address" id="storeAddress">위치를 불러오는 중...</p>
   </div>
 
   <!-- ④ 혼잡도 그래프 + 최적 방문 -->
-  <div class="section">
-    <div class="section-title">📊 시간대별 혼잡도 예측</div>
+  <div class="card">
+    <div class="card-title">📊 시간대별 혼잡도 예측</div>
     <div class="chart-wrap">
       <div class="chart-col">
         <div class="chart-bar-wrap"><div class="chart-bar" style="height:30%"></div></div>
@@ -256,7 +313,7 @@
         <span class="chart-time">12시</span>
       </div>
       <div class="chart-col">
-        <div class="chart-bar-wrap"><div class="chart-bar" style="height:60%"></div></div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="height:58%"></div></div>
         <span class="chart-time">13시</span>
       </div>
       <div class="chart-col">
@@ -264,7 +321,7 @@
         <span class="chart-time">14시</span>
       </div>
       <div class="chart-col">
-        <div class="chart-bar-wrap"><div class="chart-bar" style="height:45%"></div></div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="height:44%"></div></div>
         <span class="chart-time">17시</span>
       </div>
       <div class="chart-col">
@@ -280,30 +337,30 @@
       </div>
     </div>
     <div class="recommend-box">
-      <span style="font-size:22px">💡</span>
+      <span class="icon">💡</span>
       <div>
         <strong>최적 방문 시간: 14:00</strong>
-        <p>지금보다 1시간 후 방문 시 대기시간 <strong style="color:#FF5A00">70% 감소</strong> 예측!</p>
+        <p>지금보다 1시간 후 방문 시 대기시간 <strong style="color:var(--orange)">70% 감소</strong> 예측!</p>
       </div>
     </div>
   </div>
 
   <!-- ⑤ 리뷰 -->
-  <div class="section">
-    <div class="section-title">💬 사용자 실시간 후기</div>
+  <div class="card">
+    <div class="card-title">💬 사용자 실시간 후기</div>
     <div class="review-item">
       <div class="review-header">
-        <span class="user">방문자A</span>
+        <span class="reviewer">방문자A</span>
         <span class="stars">⭐⭐⭐⭐⭐</span>
-        <span class="wait-info">대기 10분</span>
+        <span class="wait-chip">대기 10분</span>
       </div>
       <p>음식이 맛있고 회전율이 빨라서 금방 들어갔어요!</p>
     </div>
     <div class="review-item">
       <div class="review-header">
-        <span class="user">방문자B</span>
+        <span class="reviewer">방문자B</span>
         <span class="stars">⭐⭐⭐⭐</span>
-        <span class="wait-info">대기 20분</span>
+        <span class="wait-chip">대기 20분</span>
       </div>
       <p>점심시간엔 좀 기다리지만 맛은 역시 최고예요 👍</p>
     </div>
@@ -319,21 +376,21 @@
   </div>
 
   <!-- ⑦ 광고 -->
-  <div class="ad-section">
+  <div class="ad-card">
     <p class="ad-label">AD</p>
     <h4>너무 오래 기다리기 힘드신가요? 🔄</h4>
     <p>근처 <strong>'타임픽 제휴 맛집'</strong>은 지금 대기 0분!</p>
-    <div class="alt-card">🟢 이삭토스트 한신대점 — 지금 바로 입장 가능!</div>
+    <div class="alt-chip">🟢 이삭토스트 한신대점 — 지금 바로 입장 가능!</div>
   </div>
 
   <button class="home-btn" onclick="history.back()">← 목록으로 돌아가기</button>
 
   <!-- 현장 정보 모달 -->
   <div id="waitModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-sheet">
       <div class="modal-handle"></div>
       <span class="close-btn" onclick="closeModal()">×</span>
-      <h3 style="color:#2D4B9B; margin-bottom:8px; font-size:17px;">📝 현장 정보 공유하기</h3>
+      <div class="modal-title">📝 현장 정보 공유하기</div>
       <div class="weather-bar" id="modalWeatherBar">날씨 정보 불러오는 중...</div>
       <p style="font-size:13px; color:#64748b; margin-bottom:16px;">현장 상황을 알려주시면 <strong>300P</strong>를 드려요!</p>
       <div class="survey-group">
@@ -360,30 +417,30 @@
         <label>4. 체감 대기시간은 몇 분인가요?</label>
         <input type="number" id="waitInput" placeholder="예: 15">
       </div>
-      <button class="btn-submit" onclick="submitWaitTime()">300P 적립받기</button>
+      <button class="submit-btn" onclick="submitWaitTime()">300P 적립받기</button>
     </div>
   </div>
 
   <!-- 웨이팅 등록 모달 -->
   <div id="waitingRegModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-sheet">
       <div class="modal-handle"></div>
       <span class="close-btn" onclick="closeWaitingModal()">×</span>
-      <div style="text-align:center; margin-bottom:16px;">
-        <div style="font-size:40px; margin-bottom:8px;">🍽️</div>
-        <h3 style="color:#2D4B9B; font-size:17px;" id="waitingStoreName">맘스터치 한신대점</h3>
-        <p style="font-size:13px; color:#64748b;" id="waitingCat">패스트푸드</p>
+      <div style="text-align:center; margin-bottom:18px;">
+        <div style="font-size:44px; margin-bottom:10px;">🍽️</div>
+        <div style="font-size:18px; font-weight:800; color:var(--primary);" id="waitingStoreName">맘스터치 한신대점</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:4px;" id="waitingCat">패스트푸드</div>
       </div>
-      <div style="background:#fff7ed; border-radius:14px; padding:16px; text-align:center; margin-bottom:16px;">
-        <p style="font-size:12px; color:#64748b; margin-bottom:4px;">현재 예상 대기시간</p>
-        <p style="font-size:40px; font-weight:800; color:#FF5A00;" id="waitingTime">15분</p>
-        <p style="font-size:12px; color:#4A90E2;" id="waitingAdjusted">날씨 반영 계산 중...</p>
+      <div style="background:#fff7ed; border-radius:16px; padding:18px; text-align:center; margin-bottom:16px;">
+        <p style="font-size:12px; color:var(--muted); margin-bottom:6px;">현재 예상 대기시간</p>
+        <p style="font-size:44px; font-weight:800; color:var(--orange); line-height:1;" id="waitingTime">15분</p>
+        <p style="font-size:12px; color:#4A90E2; margin-top:8px;" id="waitingAdjusted">날씨 반영 계산 중...</p>
       </div>
-      <div style="background:#f8fafc; border-radius:12px; padding:14px; margin-bottom:16px; font-size:13px; color:#475569; line-height:1.8;">
+      <div style="background:#f8fafc; border-radius:12px; padding:14px; margin-bottom:18px; font-size:13px; color:#475569; line-height:1.8;">
         📋 순서가 되면 알림을 보내드려요<br>
-        ✅ 웨이팅 완료 후 리뷰 작성 시 <strong style="color:#FF5A00;">300P</strong> 적립
+        ✅ 웨이팅 완료 후 리뷰 작성 시 <strong style="color:var(--orange)">300P</strong> 적립
       </div>
-      <button class="btn-submit" onclick="confirmWaiting()">✅ 웨이팅 등록 완료</button>
+      <button class="submit-btn" onclick="confirmWaiting()">✅ 웨이팅 등록 완료</button>
     </div>
   </div>
 
@@ -391,10 +448,7 @@
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02e11ec3ab72981ecad234ecdeb83ed1&libraries=services"></script>
 
   <script>
-    // ====================================
-    // 식당 데이터 - localStorage에서 읽기
-    // 없으면 맘스터치 기본값 사용
-    // ====================================
+    // 식당 데이터 로드
     const defaultStore = {
       name: "맘스터치 한신대점",
       category: "패스트푸드",
@@ -403,156 +457,97 @@
       img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
       searchKeyword: "맘스터치 오산 한신대"
     };
-
     let store = defaultStore;
     try {
       const saved = localStorage.getItem("selectedStore");
-      if (saved) store = JSON.parse(saved);
+      if (saved) store = { ...defaultStore, ...JSON.parse(saved) };
     } catch(e) {}
 
-    // ====================================
-    // 식당 정보 화면에 표시
-    // ====================================
-    document.getElementById("name").textContent = store.name || defaultStore.name;
-    document.getElementById("info").textContent = `${store.category || "패스트푸드"} | ⭐ ${store.rating || 4.8}`;
-    document.getElementById("wait").textContent = store.wait || 15;
-    document.getElementById("detailImg").src = store.img || defaultStore.img;
-    document.getElementById("waitingStoreName").textContent = store.name || defaultStore.name;
-    document.getElementById("waitingCat").textContent = store.category || "패스트푸드";
-    document.getElementById("waitingTime").textContent = (store.wait || 15) + "분";
+    // 화면에 정보 채우기
+    document.getElementById("name").textContent = store.name;
+    document.getElementById("info").textContent = `${store.category} | ⭐ ${store.rating}`;
+    document.getElementById("wait").textContent = store.wait;
+    document.getElementById("detailImg").src = store.img;
+    document.getElementById("waitingStoreName").textContent = store.name;
+    document.getElementById("waitingCat").textContent = store.category;
+    document.getElementById("waitingTime").textContent = store.wait + "분";
 
-    // ====================================
     // 날씨 연동
-    // ====================================
     function initWeather() {
-      if (!window.WeatherAPI) return;
-      const baseWait = store.wait || 15;
-
-      WeatherAPI.predictWaitTime(baseWait).then(({ finalWait, weatherInfo }) => {
-        const adj = document.getElementById("waitAdjusted");
-        if (adj) adj.textContent = `${weatherInfo.icon} 날씨·요일 반영 예측: 약 ${finalWait}분`;
-        const wAdj = document.getElementById("waitingAdjusted");
-        if (wAdj) wAdj.textContent = `${weatherInfo.icon} 날씨·요일 반영: 약 ${finalWait}분 예상`;
+      if (!window.WeatherAPI) { setTimeout(initWeather, 300); return; }
+      WeatherAPI.predictWaitTime(store.wait).then(({ finalWait, weatherInfo }) => {
+        document.getElementById("waitAdjusted").textContent =
+          `${weatherInfo.icon} 날씨·요일 반영 예측: 약 ${finalWait}분`;
+        document.getElementById("waitingAdjusted").textContent =
+          `${weatherInfo.icon} 날씨·요일 반영: 약 ${finalWait}분 예상`;
       });
-
       WeatherAPI.fetchWeather().then(w => {
         const today = ["일","월","화","수","목","금","토"][new Date().getDay()];
-        const bar = document.getElementById("modalWeatherBar");
-        if (bar) bar.textContent = `${w.icon} ${w.temp} ${w.label} | ${today}요일`;
+        document.getElementById("modalWeatherBar").textContent =
+          `${w.icon} ${w.temp} ${w.label} | ${today}요일`;
       });
     }
 
-    // ====================================
-    // 카카오맵 - 키워드 검색으로 정확한 위치
-    // ====================================
+    // 카카오맵
     function initMap() {
-      const mapContainer = document.getElementById('map');
-      if (!mapContainer) return;
-
+      if (!window.kakao?.maps?.services) { setTimeout(initMap, 200); return; }
       const defaultPos = new kakao.maps.LatLng(37.1924, 127.0251);
-      const map = new kakao.maps.Map(mapContainer, { center: defaultPos, level: 3 });
-
+      const map = new kakao.maps.Map(document.getElementById('map'), {
+        center: defaultPos, level: 3
+      });
       const ps = new kakao.maps.services.Places();
-      const keyword = store.searchKeyword || (store.name + " 오산");
-
-      ps.keywordSearch(keyword, function(data, status) {
-        let pos, placeName, placeAddr;
-
-        if (status === kakao.maps.services.Status.OK && data.length > 0) {
-          pos = new kakao.maps.LatLng(data[0].y, data[0].x);
-          placeName = data[0].place_name;
-          placeAddr = data[0].road_address_name || data[0].address_name;
-        } else {
-          pos = defaultPos;
-          placeName = store.name;
-          placeAddr = "경기도 오산시 한신대길 근처";
-        }
+      ps.keywordSearch(store.searchKeyword || store.name + " 오산", function(data, status) {
+        const pos = (status === kakao.maps.services.Status.OK && data.length > 0)
+          ? new kakao.maps.LatLng(data[0].y, data[0].x)
+          : defaultPos;
+        const addr = (status === kakao.maps.services.Status.OK && data.length > 0)
+          ? (data[0].road_address_name || data[0].address_name)
+          : "경기도 오산시 한신대길 근처";
 
         map.setCenter(pos);
-
         const marker = new kakao.maps.Marker({ map, position: pos });
-        const iw = new kakao.maps.InfoWindow({
-          content: `
-            <div style="padding:8px 12px; font-size:13px; font-weight:bold; color:#2D4B9B; white-space:nowrap;">
-              🍔 ${placeName}<br>
-              <span style="font-size:11px; color:#64748b; font-weight:normal;">${placeAddr}</span>
-            </div>
-          `
-        });
-        iw.open(map, marker);
-
-        const addrEl = document.getElementById("storeAddress");
-        if (addrEl) addrEl.textContent = placeAddr;
+        new kakao.maps.InfoWindow({
+          content: `<div style="padding:8px 12px; font-size:13px; font-weight:bold; color:#2D4B9B; white-space:nowrap;">
+            🍔 ${store.name}<br>
+            <span style="font-size:11px; color:#64748b; font-weight:normal;">${addr}</span>
+          </div>`
+        }).open(map, marker);
+        document.getElementById("storeAddress").textContent = addr;
       });
     }
 
-    // ====================================
-    // 카카오맵 + 날씨 로드 대기
-    // ====================================
-    function waitAndInit() {
-      if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
-        initMap();
-      } else {
-        setTimeout(waitAndInit, 200);
-      }
-      if (window.WeatherAPI) {
-        initWeather();
-      } else {
-        setTimeout(initWeather, 500);
-      }
-    }
-    waitAndInit();
+    initWeather();
+    initMap();
 
-    // ====================================
-    // 모달
-    // ====================================
-    window.openInput = function() {
-      document.getElementById("waitModal").classList.add("active");
-    }
-    window.closeModal = function() {
-      document.getElementById("waitModal").classList.remove("active");
-    }
-    window.openWaitingModal = function() {
-      document.getElementById("waitingRegModal").classList.add("active");
-    }
-    window.closeWaitingModal = function() {
-      document.getElementById("waitingRegModal").classList.remove("active");
-    }
-    window.confirmWaiting = function() {
-      closeWaitingModal();
-      showToast("🎉 웨이팅이 등록되었습니다!");
-    }
-    window.submitWaitTime = function() {
+    // 모달 함수
+    window.openInput = () => document.getElementById("waitModal").classList.add("active");
+    window.closeModal = () => document.getElementById("waitModal").classList.remove("active");
+    window.openWaitingModal = () => document.getElementById("waitingRegModal").classList.add("active");
+    window.closeWaitingModal = () => document.getElementById("waitingRegModal").classList.remove("active");
+    window.confirmWaiting = () => { closeWaitingModal(); showToast("🎉 웨이팅이 등록되었습니다!"); };
+    window.submitWaitTime = () => {
       const people = document.getElementById("peopleInput")?.value;
       const wait = document.getElementById("waitInput")?.value;
       const status = document.querySelector("input[name='status']:checked");
       const crowd = document.querySelector("input[name='crowd']:checked");
-      if (!people || !wait || !status || !crowd) {
-        showToast("⚠️ 모든 항목을 입력해주세요!"); return;
-      }
+      if (!people || !wait || !status || !crowd) { showToast("⚠️ 모든 항목을 입력해주세요!"); return; }
       closeModal();
-      showPointAnimation(300);
+      showPointAnim(300);
       showToast("🎉 300P가 적립되었습니다!");
-    }
+    };
 
-    function showPointAnimation(points) {
+    function showPointAnim(p) {
       const el = document.createElement("div");
-      el.textContent = `+${points}P 적립! 🎉`;
-      el.style.cssText = `
-        position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
-        background:#FF5A00; color:white; padding:12px 28px;
-        border-radius:30px; font-size:18px; font-weight:800;
-        z-index:9999; pointer-events:none;
-        box-shadow:0 4px 20px rgba(255,90,0,0.4);
-        animation:pointUp 1.8s ease forwards;
-      `;
-      const s = document.createElement("style");
-      s.textContent = `@keyframes pointUp {
-        0%{opacity:1;transform:translateX(-50%) translateY(0)}
-        70%{opacity:1;transform:translateX(-50%) translateY(-40px)}
-        100%{opacity:0;transform:translateX(-50%) translateY(-60px)}
-      }`;
-      document.head.appendChild(s);
+      el.textContent = `+${p}P 적립! 🎉`;
+      el.style.cssText = `position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+        background:#FF5A00;color:white;padding:12px 28px;border-radius:30px;
+        font-size:18px;font-weight:800;z-index:9999;pointer-events:none;
+        box-shadow:0 4px 20px rgba(255,90,0,.4);animation:pu 1.8s ease forwards;`;
+      if (!document.getElementById("pa")) {
+        const s = document.createElement("style"); s.id = "pa";
+        s.textContent = `@keyframes pu{0%{opacity:1;transform:translateX(-50%) translateY(0)}70%{opacity:1;transform:translateX(-50%) translateY(-40px)}100%{opacity:0;transform:translateX(-50%) translateY(-60px)}}`;
+        document.head.appendChild(s);
+      }
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 1800);
     }
@@ -560,24 +555,18 @@
     function showToast(msg) {
       const el = document.createElement("div");
       el.textContent = msg;
-      el.style.cssText = `
-        position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
-        background:#1e293b; color:white; padding:12px 24px;
-        border-radius:30px; font-size:14px; font-weight:700;
-        z-index:9999; white-space:nowrap; pointer-events:none;
-        animation:fadeInOut 2.5s ease forwards;
-      `;
-      const s = document.createElement("style");
-      s.textContent = `@keyframes fadeInOut {
-        0%{opacity:0;transform:translateX(-50%) translateY(10px)}
-        15%{opacity:1;transform:translateX(-50%) translateY(0)}
-        75%{opacity:1} 100%{opacity:0}
-      }`;
-      document.head.appendChild(s);
+      el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+        background:#1e293b;color:white;padding:12px 24px;border-radius:30px;
+        font-size:14px;font-weight:700;z-index:9999;white-space:nowrap;
+        pointer-events:none;animation:ft 2.5s ease forwards;`;
+      if (!document.getElementById("ta")) {
+        const s = document.createElement("style"); s.id = "ta";
+        s.textContent = `@keyframes ft{0%{opacity:0;transform:translateX(-50%) translateY(10px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}75%{opacity:1}100%{opacity:0}}`;
+        document.head.appendChild(s);
+      }
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 2500);
     }
   </script>
-
 </body>
 </html>
