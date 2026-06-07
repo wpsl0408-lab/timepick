@@ -83,8 +83,10 @@
         </div>
 
         <!-- AI 추천 -->
-        <div class="ai-banner">
-            🤖 AI 추천: 현재 혼잡도가 낮은 "이삭토스트"를 추천합니다!
+        <!-- AI 추천 배너 (Gemini 연동) -->
+        <div id="ai-banner" class="ai-banner" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="getAIRecommend()">
+            <span>🤖 AI가 날씨·대기시간 분석 중...</span>
+            <span style="font-size:11px; opacity:0.7; white-space:nowrap; margin-left:8px;">🔄 새로고침</span>
         </div>
 
         <!-- 추천 제목 -->
@@ -166,6 +168,7 @@
     <script src="weather.js"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02e11ec3ab72981ecad234ecdeb83ed1&libraries=services"></script>
     <script src="script.js"></script>
+    <script src="ai-recommend.js"></script>
 
     <script>
         // 날씨 위젯
