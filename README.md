@@ -2,7 +2,7 @@
 
 > **기다림을 스마트하게, 맛집을 현명하게**
 
-🌐 **서비스 바로가기**: [https://wpsl0408-lab.github.io/timepick/](https://wpsl0408-lab.github.io/timepick/)
+🌐 **서비스 바로가기**: [[https://wpsl0408-lab.github.io/timepick/](https://wpsl0408-lab.github.io/timepick/)](https://wpsl0408-lab.github.io/timepick/login.html)
 
 ---
 
@@ -288,6 +288,6 @@ Maps API  (날씨 데이터)  (식당 데이터)
 
 *기다림을 스마트하게, 맛집을 현명하게*
 
-[서비스 바로가기](https://wpsl0408-lab.github.io/timepick/)
+[서비스 바로가기](https://wpsl0408-lab.github.io/timepick/)](https://wpsl0408-lab.github.io/timepick/login.html)
 
 </div>
